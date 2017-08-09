@@ -1,0 +1,277 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?9fa8194e8eec0b3e48ae030baf9950a7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>达人分享调理便秘经验</title>
+<meta name="robots" content="noindex">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimal-ui">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta name="format-detection" content="telphone=no">
+		<meta name="renderer" content="webkit">
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!-- UC强制全屏 -->
+		<meta name="full-screen" content="yes">
+		<!-- QQ强制全屏 -->
+		<meta name="x5-fullscreen" content="true">
+		<!-- UC应用模式 -->
+		<meta name="browsermode" content="appl ication">
+		<meta name="”renderer”" content="”webkit|ie-comp|ie-stand”">
+
+    <link media="all" href="css/index.css" type="text/css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+
+    <script src="js/analytics.js"></script>
+    <script type="text/javascript" src="js/jf.js"></script>
+    <script type="text/javascript" src="js/copy-right.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+</head>
+<body style="max-width:640px; margin:auto;">
+<div class="jzxs" >
+<style type="text/css">
+.ull ul li{
+  width:16%;
+  height:45px; 
+  float:left;
+  color:#FFF;
+  padding-right: 0.2rem;
+  display: flex;
+  align-items:center;
+}
+
+.ull ul li a{
+  font-size:0.9rem;
+  color:#FFF;
+}
+
+</style>
+<div class="content">
+    <div class="thame_pic top" id="lazy_img">
+            <div id="case">
+                    <div class="box_80"> 
+                    <img src="image/toutiao4_01.png"  alt="1" >  
+                    <img src="image/toutiao4_02.png"  alt="1" >
+                    <a><img src="image/toutiao4_03.gif"  alt="1" usemap="#Map" >
+                    <map name="Map">
+                      <area shape="rect" coords="150,36,509,97"  href="http://z.chinesemsyy.com/bianmi/022/">
+                    </map>
+                    </a>
+                    <img src="image/toutiao4_04.jpg"  alt="1" >
+                      
+                        
+                    </div>
+          </div>
+       
+ </div>
+
+               
+  </div>
+
+
+
+
+    
+
+
+   
+
+
+    <script>
+        $(function () {
+            // 第一题
+            var question_1 = '', question_2 = '', question_3 = '', Last_question = '';
+            var lis = $(".swiper-wrapper");
+            var odiv = $(".swiper-container");
+            var wd = odiv.width();
+            $("#first li").on("click", function () {
+                question_1 = "";
+                $(this).addClass("on").siblings().removeClass("on");
+                question_1 = $(this).index() + 1;
+                $(this).parents(".swiper-slide").addClass("active").siblings().removeClass("active");
+                lis.animate({ left: "-" + wd + "px" }, 400);
+            });
+
+            // 第二题
+            $("#second li").on("click", function () {
+                question_2 = "";
+                $(this).addClass("on").siblings().removeClass("on");
+                question_2 = $(this).index() + 1;
+                $(this).parents(".swiper-slide").addClass("active").siblings().removeClass("active");
+                lis.animate({ left: "-" + wd * 2 + "px" }, 400);
+            });
+
+            // 第三题
+            $("#third li").on("click", function () {
+                question_3 = "";
+                $(this).addClass("on").siblings().removeClass("on");
+                question_3 = $(this).index() + 1;
+            });
+
+            // 点击提交弹出对应编号
+            $("#submit_btn").on("click", function () {
+                if (!$("#third li").hasClass("on")) {
+                    $.diy_alert({ "cont": "第三题，未选答案" });
+                    setTimeout(function () {
+                        $(".diy_alert").remove();
+                    }, 1000);
+                    return;
+                }
+                else {
+                    //Last_question = question_1.toString()+question_2.toString()+question_3.toString();
+                    //  $("#Mask .Mask_txt h3 span,#Mask .Mask_txt .num").html(Last_question);
+                    // $("#Mask").fadeIn(400); 
+
+                    $(".qq_Mask").fadeIn(400);
+                }
+            });
+
+            // 点击关闭按钮关闭遮罩层并且将测试返回第一题
+            $("#Mask .close_Mask").on("click", function () {
+                $("#Mask").fadeOut(400);
+                //mySwiper.slideTo(0);
+                lis.animate({ left: "0px" }, 400);
+            });
+
+            // 点击上一题
+            $(".prev").on("click", function () {
+                //mySwiper.slidePrev();
+                var b = parseInt(lis.css("left")) + parseInt(wd);
+                lis.animate({ left: b + "px" }, 400);
+            });
+
+            // 导航切换
+            $(".menu li").on("click", function () {
+                $(this).addClass("on").siblings().removeClass("on");
+                var TabIndex = $(this).index();
+                if (TabIndex == 0) {
+                    $("#case").fadeIn(400);
+                    $("#comment").fadeOut(400);
+                } else {
+                    $("#comment").fadeIn(400);
+                    $("#case").fadeOut(400);
+                }
+            });
+
+            var isPlay = false;
+
+            // 点击播放语音
+            $(".voice").click(function () {
+                if (!isPlay) {
+                    AudioPlay($(this), ".voice_pic");
+                    isPlay = true;
+                } else {
+                    AudioPause($(this), ".voice_pic");
+                    isPlay = false;
+                }
+            });
+
+            $(".M_voice").on("click", function () {
+                if (!isPlay) {
+                    AudioPlay($(this), ".Middle_voice");
+                    isPlay = true;
+                } else {
+                    AudioPause($(this), ".Middle_voice");
+                    isPlay = false;
+                }
+            });
+
+            $(".audio_bottom").on("click", function () {
+                if (!isPlay) {
+                    AudioPlay($(this), ".bottom_voice");
+                    isPlay = true;
+                } else {
+                    AudioPause($(this), ".bottom_voice");
+                    isPlay = false;
+                }
+            });
+
+            // 音频播放函数
+            function AudioPlay(obj, obj_voice) {
+                obj.children("audio").get(0).play();
+                obj.children("em,i").fadeOut();
+                obj.children(obj_voice).addClass("on");
+            }
+            // 音频暂停且当前时间设为0函数
+            function AudioPause(obj, obj_voice) {
+                obj.children("audio").get(0).pause();
+                obj.children("audio").get(0).currentTime = 0;
+                obj.children(obj_voice).removeClass("on");
+            }
+
+            // 点赞
+            var isLike = false;
+            $(".top_b_like").on("click", function () {
+                if (!isLike) {
+                    $(this).children("img").attr("src", "css/top_b_like.png");
+                    var LikeNum = parseInt($(this).children("span").html());
+                    $(this).children("span").html(LikeNum + 1);
+                    isLike = true;
+                } else {
+                    $(this).children("img").attr("src", "css/top_b_like.png");
+                    var LikeNum = parseInt($(this).children("span").html());
+                    $(this).children("span").html(LikeNum - 1);
+                    isLike = false;
+                }
+            });
+
+            // 点击评论区小图放大到整屏显示
+            $(".user_Pic li").on("click", function () {
+                var PicLength = $(this).parent().children('li').length;
+                $(this).parent().children('li').each(function () {
+                    var PicId = $(this).attr('id');
+                    $("#thumb .swiper-container .swiper-wrapper").append("<div class='swiper-slide'><img src='img/comment/" + PicId + ".jpg'/></div>");
+                });
+                $("#thumb").fadeIn(400);
+            });
+
+            $("#thumb .thumb_close").click(function () {
+                $("#thumb").fadeOut(400);
+                $("#thumb .swiper-container .swiper-wrapper").html('');
+            });
+
+            //关闭微信弹窗
+            $(".qq_Mask .close_Mask").click(function () {
+                $(".qq_Mask").fadeOut(400);
+            });
+            //微信弹窗
+            $(".top_r,.bottom_btn,.Link,.top_l").click(function () {
+
+ 
+
+                if (!navigator.userAgent.match(/MicroMessenger/)) {
+                    $(".qq_Mask").fadeIn(400);
+                }
+                else {
+                    $(".qq_Mask").fadeIn(400);
+
+                }
+
+            });
+        });
+    </script>
+</body>
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a0aec87793e1b0fa326e6fff5cbe3cf1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</html>
