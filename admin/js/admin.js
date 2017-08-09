@@ -18,6 +18,7 @@ function back_login(){
 				switch (data.result){
 					case 1:
 						$('#msg').empty().text('登录成功！');
+						location.href = 'main.html';
 						break;
 					case 0:
 						$('#msg').empty().text('密码不对！');
