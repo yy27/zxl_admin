@@ -107,7 +107,9 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
+					
 					<iframe src="page/c062.php" id="content" style="width:100%;height:99%;" frameborder="0"></iframe>
+					
 				</div>
 			</div>
 			<!-- END MAIN CONTENT -->
@@ -120,6 +122,10 @@
 	<!-- Javascript -->
 	<script src="assets/vendor/jquery/jquery.min.js"></script>
 	<script src="assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+	<script src="assets/vendor/chartist/js/chartist.min.js"></script>
+	<script src="assets/scripts/klorofil-common.js"></script>
 	<script type="text/javascript">
 	$("#subPages ul li a").click(function(){
 		$('#content').attr('src',$(this).data('url'));

@@ -189,7 +189,8 @@ html.fullscreen-bg #wrapper {
 
 .navbar-btn {
   float: left;
-  padding: 16px 0; }
+  padding: 16px 0;
+  margin-right: 20px; }
   .navbar-btn button {
     font-size: 24px;
     padding: 4px 8px;
@@ -418,7 +419,11 @@ ul.notifications > li {
       .sidebar .nav .nav > li > a {
         padding-left: 60px;
         padding-top: 10px;
-        padding-bottom: 10px; }
+        padding-bottom: 10px;
+        cursor: pointer; }
+        .sidebar .nav .nav > li > a:hover{
+          background-color: #39404B;
+        }
         .sidebar .nav .nav > li > a:focus, .sidebar .nav .nav > li > a.active {
           background-color: transparent;
           border-left-color: transparent; }
