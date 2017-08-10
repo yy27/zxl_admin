@@ -51,6 +51,15 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	padding-top: 20px;
 	width: 100%;
 }
+.panel{
+	position: relative;
+}
+#download{
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	z-index: 100;
+}
 </style>
 <script type="text/javascript" src="../assets/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../assets/bootstrap/js/bootstrap.min.js"></script>
@@ -64,7 +73,7 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	<div class="form-group">
 	    <label for="dtp_input1" class="col-md-2 control-label">开始时间</label>
 	    <div class="input-group date start_datetime col-md-5" data-date="1979-09-16" data-date-format="dd MM yyyy" data-link-field="dtp_input1">
-	        <input class="form-control" size="16" type="text" value="<?php echo isset($_GET['start'])?$_GET['start']:''; ?>" id="start_data" readonly>
+	        <input class="form-control" size="16" type="text" value="<?php echo isset($_GET['start'])?date('Y-m-d',$_GET['start']):''; ?>" id="start_data" readonly>
 	        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 			<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
 	    </div>
@@ -73,15 +82,21 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	<div class="form-group">
 	    <label for="dtp_input1" class="col-md-2 control-label">结束时间</label>
 	    <div class="input-group date end_datetime col-md-5" data-date="1979-09-16" data-date-format="dd MM yyyy" data-link-field="dtp_input1">
-	        <input class="form-control" size="16" id="end_data" type="text" value="<?php echo isset($_GET['end'])?$_GET['end']:''; ?>" readonly>
+	        <input class="form-control" size="16" id="end_data" type="text" value="<?php echo isset($_GET['end'])?date('Y-m-d',$_GET['end']):''; ?>" readonly>
 	        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 			<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
 	    </div>
 		<input type="hidden" id="dtp_input1" value="" /><br/>
 	</div>
-	<a href="c062.php?start=1502294400&end=1502380799"><button type="button" class="btn btn-primary btn-lg" id="data_s">查	 询</button></a>
+	<a id="data_s"><button type="button" class="btn btn-primary btn-lg">查	 询</button></a>
 </div>
 	<div class="panel">
+	<?php
+	if(isset($_GET['start']) && isset($_GET['end'])){
+		echo '<a type="button" class="btn btn-success" id="download">下载 excel</a>';
+	}
+	?>
+		
 		<div class="panel-heading">
 			<h3 class="panel-title">c062联系方式信息表</h3>
 		</div>
@@ -111,7 +126,7 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	    $db_name_php = 'zxl_z';
 
 	    if(isset($_GET['start']) && isset($_GET['end'])){
-	    	$sql = "SELECT * FROM c062_phone where mytime>={$_GET['start']} AND mytime<={$_GET['start']}";
+	    	$sql = "SELECT * FROM c062_phone where mytime>={$_GET['start']} AND mytime<{$_GET['end']}";
 	    }else{
 	    	$sql = "SELECT * FROM c062_phone";
 	    }
@@ -119,6 +134,11 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	    mysql_select_db($db_name_php,$con);
 	    $phoneall = mysql_query($sql);
 	    $num = mysql_num_rows($phoneall);
+	    if($num == 0){
+	    	echo '<tr><td colspan="4" style="text-align:center;padding-top:50px;">一条数据都没有</td></tr>';
+	    	echo "</tbody>";
+  			echo "</table>";
+	    } else {
 	    $pagecount = 1;//每页展示几条数据
 	    $pagenum = ceil($num/$pagecount);
 	    $nowpage = '';
@@ -131,9 +151,13 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	    } else{
 	    	$nowpage = 1;
 	    }
-	    $countfrom = ($nowpage-1)*$pagecount;
-	    $countto = $nowpage*$pagecount;
-	    $result = mysql_query("SELECT * FROM c062_phone LIMIT $countfrom , $countto");
+	    $countfrom = $nowpage-1;
+	    if(isset($_GET['start']) && isset($_GET['end'])){
+	    	$result = mysql_query("SELECT * FROM c062_phone where mytime>={$_GET['start']} AND mytime<{$_GET['end']} LIMIT $countfrom , $pagecount");
+	    } else {
+	    	$result = mysql_query("SELECT * FROM c062_phone LIMIT $countfrom , $pagecount");
+	    }
+	    
 
 while($row = mysql_fetch_array($result)){
 
@@ -148,11 +172,16 @@ while($row = mysql_fetch_array($result)){
   echo "</tr>";
 
 }
-
+echo "</tbody>";
   echo "</table>";
 
 require('../function/page.php');
-getPageHtml($nowpage,$pagenum,'c062.php');
+if(isset($_GET['start']) && isset($_GET['end'])){
+	getPageHtml($nowpage,$pagenum,"c062.php?start=".$_GET['start']."&end=".$_GET['end']."&");
+} else {
+	getPageHtml($nowpage,$pagenum,'c062.php?');
+}
+}
 
 	?>
 			</tbody>
@@ -178,32 +207,22 @@ getPageHtml($nowpage,$pagenum,'c062.php');
         startDate:'2017-7-1',
         minuteStep: 10
     });
-    // $('#data_s').click(function(){
-    // 	var start = $('#start_data').val();
-    // 	var end = $('#end_data').val();
-    // 	if(start.length>0 && end.length>0){
-    // 		if($.myTime.DateToUnix(start) <= $.myTime.DateToUnix(end)){
-
-    // 			self.location.href='http://localhost/z/admin/page/c062.php?start='+start+'&end='+end;
-		  //   	// $.ajax({
-		  //   	// 	type:'GET',
-		  //   	// 	url:'../function/search.php',
-		  //   	// 	data:{'start':$.myTime.DateToUnix(start),'end':$.myTime.DateToUnix(end)+86399},
-		  //   	// 	dataType:'html',
-		  //   	// 	complete:function(res){
-		  //   	// 		//console.log(res);
-		  //   	// 		$('.panel-body table tbody').html(res.responseText);
-		  //   	// 	}
-
-		  //   	// });
-	   //  	} else {
-	   //  		alert('结束日期必须大于开始日期！')
-	   //  	}
-    // 	} else {
-    // 		alert('日期不完整');
-    // 	}
-    // })
-</script>   
-<!-- </div> -->
+    $('#data_s').click(function(){
+    	var s = $('#start_data').val();
+    	var e = $('#end_data').val();
+    	if(s.length>0 && e.length>0){
+    		self.location.href='c062.php?start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
+    	} else {
+    		alert('查询日期已飞走！');
+    	}
+    	
+    });
+    $('#download').click(function(){
+    	var s = $('#start_data').val();
+    	var e = $('#end_data').val();
+    	self.location.href='excel.php?chartname=c062_phone&start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
+    });
+    
+</script>
 </body>
 </html>

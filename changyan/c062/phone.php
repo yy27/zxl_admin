@@ -15,12 +15,13 @@
     $_time = date('y-m-d h:i:s',time());
 
 	$_phone = $_POST['phone'];
+	$_mytime = strtotime($_time);
 
-	$sql="INSERT INTO c062_phone (phone, time)
+	$sql="INSERT INTO c062_phone (phone, time,mytime)
 
 		VALUES
 
-		('$_phone','$_time')";
+		('$_phone','$_time','$_mytime')";
 
 
 

@@ -37,13 +37,13 @@
    $_pageHtml .= '<li><a  title="第一页" href="'.$url.'&page=1">«</a></li>';
   }*/
   if($page>1){
-   $_pageHtml .= '<a  title="上一页" href="'.$url.'?page='.($page-1).'">«</a>';
+   $_pageHtml .= '<a  title="上一页" href="'.$url.'page='.($page-1).'">«</a>';
   }
   for ($i = $_start; $i <= $_end; $i++) {
    if($i == $page){
     $_pageHtml .= '<span class="current">'.$i.'</span>';
    }else{
-    $_pageHtml .= '<a href="'.$url.'?page='.$i.'">'.$i.'</a>';
+    $_pageHtml .= '<a href="'.$url.'page='.$i.'">'.$i.'</a>';
    }
   }
   /*if($_end == $pages){
@@ -52,7 +52,7 @@
    $_pageHtml .= '<li><a  title="最后一页" href="'.$url.'&page='.$pages.'">»</a></li>';
   }*/
   if($page<$_end){
-   $_pageHtml .= '<a  title="下一页" href="'.$url.'?page='.($page+1).'">»</a>';
+   $_pageHtml .= '<a  title="下一页" href="'.$url.'page='.($page+1).'">»</a>';
   }
   $_pageHtml .= '</div>';
   echo $_pageHtml;
