@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version: 5.5.40)
-# Date: 2017-08-11 11:12:51
+# Date: 2017-08-11 17:36:07
 # Generator: MySQL-Front 5.3  (Build 4.120)
 
 /*!40101 SET NAMES utf8 */;
@@ -8,6 +8,7 @@
 # Structure for table "admin_user"
 #
 
+DROP TABLE IF EXISTS `admin_user`;
 CREATE TABLE `admin_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
@@ -55,12 +56,12 @@ CREATE TABLE `chart_page` (
   `page` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 #
 # Data for table "chart_page"
 #
 
 /*!40000 ALTER TABLE `chart_page` DISABLE KEYS */;
-INSERT INTO `chart_page` VALUES (1,'c062','page/show_phone.php?table=c062_phone');
+INSERT INTO `chart_page` VALUES (1,'c062','page/show_phone.php?table=c062_phone'),(16,'c052','page/show_phone.php?table=c052_phone');
 /*!40000 ALTER TABLE `chart_page` ENABLE KEYS */;
