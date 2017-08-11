@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>c062</title>
+	<title><?php echo $_GET['table'] ?></title>
 	
 	<link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
@@ -69,7 +69,7 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 </head>
 <body>
 <!-- <div class="panel panel-headline"> -->
-<div class="choose">
+<div class="choose" style="display:<?php echo isset($_GET['table'])?'block':'none'; ?>">
 	<div class="form-group">
 	    <label for="dtp_input1" class="col-md-2 control-label">开始时间</label>
 	    <div class="input-group date start_datetime col-md-5" data-date="1979-09-16" data-date-format="dd MM yyyy" data-link-field="dtp_input1">
@@ -90,7 +90,8 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	</div>
 	<a id="data_s"><button type="button" class="btn btn-primary btn-lg">查	 询</button></a>
 </div>
-	<div class="panel">
+	<div class="panel" style="display:<?php echo isset($_GET['table'])?'block':'none'; ?>">
+	<input type="hidden" value="<?php echo isset($_GET['table'])?$_GET['table']:''; ?>" id="table_name" />
 	<?php
 	if(isset($_GET['start']) && isset($_GET['end'])){
 		echo '<a type="button" class="btn btn-success" id="download">下载 excel</a>';
@@ -98,7 +99,7 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 	?>
 		
 		<div class="panel-heading">
-			<h3 class="panel-title">c062联系方式信息表</h3>
+			<h3 class="panel-title"><?php echo $_GET['table']; ?>联系方式信息表</h3>
 		</div>
 		<div class="panel-body">
 			<table class="table table-hover">
@@ -112,82 +113,73 @@ border-right: #eee 1px solid; padding-right: 5px; border-top: #eee 1px solid; pa
 				<tbody>
 
 <?php
-
-	    $con = mysql_connect("localhost","root","oneinstack");
-
-	    if (!$con){
-
-	      echo -1;
-
-	      die('Could not connect: ' . mysql_error());
-
-	    }
-
-	    $db_name_php = 'zxl_z';
-
-	    if(isset($_GET['start']) && isset($_GET['end'])){
-	    	$sql = "SELECT * FROM c062_phone where mytime>={$_GET['start']} AND mytime<{$_GET['end']}";
-	    }else{
-	    	$sql = "SELECT * FROM c062_phone";
-	    }
-	    
-	    mysql_select_db($db_name_php,$con);
-	    $phoneall = mysql_query($sql);
-	    $num = mysql_num_rows($phoneall);
-	    if($num == 0){
-	    	echo '<tr><td colspan="4" style="text-align:center;padding-top:50px;">一条数据都没有</td></tr>';
-	    	echo "</tbody>";
-  			echo "</table>";
-	    } else {
-	    $pagecount = 1;//每页展示几条数据
-	    $pagenum = ceil($num/$pagecount);
-	    $nowpage = '';
-	    if(isset($_GET['page'])){
-	    	if($_GET['page'] > $pagenum){
-		    	$nowpage = $pagenum;
-		    } else {
-		    	$nowpage = $_GET['page'];
+	    require('../function/conn.php');
+	    if(isset($_GET['table'])){
+		    if(isset($_GET['start']) && isset($_GET['end'])){
+		    	$sql = "SELECT * FROM {$_GET['table']} where mytime>={$_GET['start']} AND mytime<{$_GET['end']}";
+		    }else{
+		    	$sql = "SELECT * FROM {$_GET['table']}";
 		    }
-	    } else{
-	    	$nowpage = 1;
-	    }
-	    $countfrom = $nowpage-1;
-	    if(isset($_GET['start']) && isset($_GET['end'])){
-	    	$result = mysql_query("SELECT * FROM c062_phone where mytime>={$_GET['start']} AND mytime<{$_GET['end']} LIMIT $countfrom , $pagecount");
-	    } else {
-	    	$result = mysql_query("SELECT * FROM c062_phone LIMIT $countfrom , $pagecount");
-	    }
-	    
+		    $phoneall = mysql_query($sql);
+		    $num = mysql_num_rows($phoneall);
+		    if($num == 0){
+		    	echo '<tr><td colspan="4" style="text-align:center;padding-top:50px;">一条数据都没有</td></tr>';
+		    	echo "</tbody>";
+	  			echo "</table>";
+		    } else {
+			    $pagecount = 30;//每页展示几条数据
+			    $pagenum = ceil($num/$pagecount);
+			    $nowpage = '';
+			    if(isset($_GET['page'])){
+			    	if($_GET['page'] > $pagenum){
+				    	$nowpage = $pagenum;
+				    } else {
+				    	$nowpage = $_GET['page'];
+				    }
+			    } else{
+			    	$nowpage = 1;
+			    }
+			    $countfrom = $nowpage-1;
+			    if(isset($_GET['start']) && isset($_GET['end'])){
+			    	$result = mysql_query("SELECT * FROM {$_GET['table']} where mytime>={$_GET['start']} AND mytime<{$_GET['end']} LIMIT $countfrom , $pagecount");
+			    } else {
+			    	$result = mysql_query("SELECT * FROM {$_GET['table']} LIMIT $countfrom , $pagecount");
+			    }
+			    
 
-while($row = mysql_fetch_array($result)){
+				while($row = mysql_fetch_array($result)){
 
-  echo "<tr>";
+				  echo "<tr>";
 
-  echo "<td>" . $row['id'] . "</td>";
+				  echo "<td>" . $row['id'] . "</td>";
 
-  echo "<td>" . $row['phone'] . "</td>";
+				  echo "<td>" . $row['phone'] . "</td>";
 
-  echo "<td>" . $row['time'] . "</td>";
+				  echo "<td>" . $row['time'] . "</td>";
 
-  echo "</tr>";
+				  echo "</tr>";
 
-}
-echo "</tbody>";
-  echo "</table>";
+				}
+				echo "</tbody>";
+		  		echo "</table>";
 
-require('../function/page.php');
-if(isset($_GET['start']) && isset($_GET['end'])){
-	getPageHtml($nowpage,$pagenum,"c062.php?start=".$_GET['start']."&end=".$_GET['end']."&");
-} else {
-	getPageHtml($nowpage,$pagenum,'c062.php?');
-}
-}
-
-	?>
+				require('../function/page.php');
+				if(isset($_GET['start']) && isset($_GET['end'])){
+					getPageHtml($nowpage,$pagenum,"show_phone.php?table=".$_GET['table']."&start=".$_GET['start']."&end=".$_GET['end']."&");
+				} else {
+					getPageHtml($nowpage,$pagenum,'show_phone.php?table='.$_GET['table'].'&');
+				}
+			}
+		} else {
+			echo '欢迎登陆后台管理系统';
+		}
+		mysql_close($con);
+?>
 			</tbody>
 		</table>
 	</div>
 <script type="text/javascript">
+	var table_name = $('#table_name').val();
     $(".start_datetime").datetimepicker({
         format: "yyyy-mm-dd",
         minView: "month",//设置只显示到月份
@@ -211,7 +203,7 @@ if(isset($_GET['start']) && isset($_GET['end'])){
     	var s = $('#start_data').val();
     	var e = $('#end_data').val();
     	if(s.length>0 && e.length>0){
-    		self.location.href='c062.php?start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
+    		self.location.href='show_phone.php?table='+table_name+'&start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
     	} else {
     		alert('查询日期已飞走！');
     	}
@@ -220,7 +212,7 @@ if(isset($_GET['start']) && isset($_GET['end'])){
     $('#download').click(function(){
     	var s = $('#start_data').val();
     	var e = $('#end_data').val();
-    	self.location.href='excel.php?chartname=c062_phone&start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
+    	self.location.href='excel.php?chartname='+table_name+'&start='+$.myTime.DateToUnix(s)+'&end='+($.myTime.DateToUnix(e)+86399);
     });
     
 </script>

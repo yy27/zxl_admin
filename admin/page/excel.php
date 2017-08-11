@@ -12,4 +12,5 @@ while($row = mysql_fetch_array($result)){
   echo "{$row['time']}\t\n";
 
 }
+mysql_close($con);
 ?> 

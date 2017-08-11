@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<?php 
+session_start();
+
+?>
 <html>
 <head>
 	<title>Login</title>
@@ -7,7 +11,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 		<script type="text/javascript" src="js/admin.js"></script>
-		
+		<?php 
+		if(isset($_SESSION['login']) && $_SESSION['login'] == md5('success')){
+			echo '<script LANGUAGE="javascript">'; 
+			echo "location.href='main.php'"; 
+			echo "</script>"; 
+		}
+		?>
 </head>
 <body>
 	 <!-----start-main---->
@@ -28,7 +38,6 @@
 			</div>
 			
 		</div>
-		<!-----//end-main---->
 
 </body>
 </html>

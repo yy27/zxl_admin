@@ -426,7 +426,8 @@ ul.notifications > li {
         }
         .sidebar .nav .nav > li > a:focus, .sidebar .nav .nav > li > a.active {
           background-color: transparent;
-          border-left-color: transparent; }
+          border-left-color: transparent;
+          color: #0af; }
         .sidebar .nav .nav > li > a.active a {
           color: #fff; }
 

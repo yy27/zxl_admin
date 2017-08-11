@@ -1,6 +1,8 @@
 <!doctype html>
+<?php 
+session_start();	
+?>
 <html lang="en">
-
 <head>
 	<title>后台系统</title>
 	<meta charset="utf-8">
@@ -20,8 +22,18 @@
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png">
+	<?php
+	if(isset($_SESSION['login']) && $_SESSION['login'] == md5('success')){
+		if(isset($_SESSION['name'])){
+			$name = $_SESSION['name'];
+		}
+	} else{
+		echo '<script LANGUAGE="javascript">'; 
+		echo "location.href='index.php'"; 
+		echo "</script>"; 
+	}
+	?>
 </head>
-
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -41,41 +53,14 @@
 					</div>
 				</form>
 				<div class="navbar-btn navbar-btn-right">
-					<a class="btn btn-success update-pro" title="exit" target="_blank"><i class="lnr lnr-power-switch"></i> <span>退 出</span></a>
+					<a class="btn btn-success update-pro" title="exit" target="_blank" id="exit"><i class="lnr lnr-power-switch"></i> <span>退 出</span></a>
 				</div>
-				<div id="navbar-menu" style="display:none;">
+				<div id="navbar-menu">
 					<ul class="nav navbar-nav navbar-right">
+						
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
-								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-danger">5</span>
-							</a>
-							<ul class="dropdown-menu notifications">
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
-								<li><a href="#" class="more">See all notifications</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-question-circle"></i> <span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Basic Use</a></li>
-								<li><a href="#">Working With Data</a></li>
-								<li><a href="#">Security</a></li>
-								<li><a href="#">Troubleshooting</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span>Samuel</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
-								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
-								<li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-								<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
-							</ul>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <span><?php echo isset($name)?$name:''?></span></a>
+							
 						</li>
 					</ul>
 				</div>
@@ -91,9 +76,16 @@
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>电话信息</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
 								<ul class="nav">
-									<li><a data-url="page/c062.php" class="">c062</a></li>
-									<li><a data-url="page/c052.php" class="">c052</a></li>
-									<li><a data-url="page/c042.php" class="">c042</a></li>
+								<?php
+									require('function/conn.php');
+									$result = mysql_query('SELECT * FROM chart_page');
+									while($rows = mysql_fetch_array($result)){
+								?>
+									<li><a data-url="<?php echo $rows['url']; ?>" class=""><?php echo $rows['page']; ?></a></li>
+								<?php
+									}
+								?>
+									<li><a data-url="page/add_phone.php" class="lnr lnr-file-add" style="font-size: 25px;"></a></li>
 								</ul>
 							</div>
 						</li>
@@ -108,7 +100,7 @@
 			<div class="main-content">
 				<div class="container-fluid">
 					
-					<iframe src="page/c062.php" id="content" style="width:100%;height:99%;" frameborder="0"></iframe>
+					<iframe src="page/show_phone.php" id="content" style="width:100%;height:99%;" frameborder="0"></iframe>
 					
 				</div>
 			</div>
@@ -128,8 +120,22 @@
 	<script src="assets/scripts/klorofil-common.js"></script>
 	<script type="text/javascript">
 	$("#subPages ul li a").click(function(){
+		$("#subPages ul li a").removeClass('active');
+		$(this).addClass('active');
 		$('#content').attr('src',$(this).data('url'));
-	})
+
+	});
+	$('#exit').click(function(){
+		$.ajax({
+			type:'POST',
+			url:'page/del_sess.php',
+			success:function(data){
+				if(data>0){
+					location.href = 'index.php';
+				}
+			},
+		});
+	});
 	</script>
 </body>
 

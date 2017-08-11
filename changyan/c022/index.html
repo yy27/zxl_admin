@@ -45,7 +45,7 @@ var _hmt = _hmt || [];
         <div class="img"><img src="img/logo.jpg" /></div>
         <div class="font">
             民生健康益生菌
-            <em>2017-08-01 10:33</em>
+            <em>2017-08-09 10:33</em>
         </div>
     </div>
     <p class="stick"><span>&nbsp;&nbsp;&nbsp;&nbsp;肠炎引发肠道恶变，每天都在上演！</span></p>
@@ -105,24 +105,24 @@ var _hmt = _hmt || [];
         <div style="width:12%;float:left;margin:2% 1% 0% 1%;">
             <img src="img/qb_icon.png" width="100%">
         </div>
-        <p style="width:64%;float:left; font-size:4vw; padding-top:4%;">长按复制微信号<b>&nbsp;&nbsp;<span class="wxcol"><span class="wx_info" style="font-size:5vw; color:#ff0000;" oncopy="_taq.push({convert_id:'62312547867', event_type:'wechat'});">baoge5762</span> </span></b> </p>
+        <p style="width:64%;float:left; font-size:4vw; padding-top:4%;">长按复制微信号<b>&nbsp;&nbsp;<span class="wxcol"><span class="wx_info" style="font-size:5vw; color:#ff0000;" oncopy="_taq.push({convert_id:'62312547867', event_type:'wechat'});">msyy0010</span> </span></b> </p>
         <span class="btn" style="float:right;"><a href="weixin://">去微信&gt;</a></span>
         <div style="clear:both;"></div>
     </div>
 
     <div style="height:1px; overflow:hidden; background:#fb545b; margin:15px auto; max-width:640px; width:94%;"></div>
 
-   <!-- <p style="max-width:640px; width:94%; margin:0 auto 1% auto; font-size:16px; font-weight:bold;">或请留下您的微信或者电话，我们将在第一时间联系您！</p>
+   <p style="max-width:640px; width:94%;margin:0 auto 1% auto; font-size:16px;color:#f00; height: 25px;" id="error_msg">或请留下您联系方式，我们将在第一时间联系您！</p>
     <table border="0" cellspacing="1" cellpadding="1" style="max-width:640px; margin:0 auto; width:94%;">
-        <form id="form1" name="form1" method="post" action="">
+        <form id="form1" name="form1" method="post">
             <tr>
                 <td><input name="phone" type="text" id="phone" style="font-size:12px; padding:2% 0; width:100%"></input></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="Submit" value="提交" style="background:#fb545b; color:#fff; text-align:center; font-size:16px; border:0; border-radius:5px; width:100%; padding:3% 0; width:100%; margin-top:3%; font-family:'Microsoft YaHei'; font-weight:bold;"></td>
+                <td colspan="2" align="center"><input type="button" id="p_btn" name="Submit" value="提交" style="background:#fb545b; color:#fff; text-align:center; font-size:16px; border:0; border-radius:5px; width:100%; padding:3% 0; width:100%; margin-top:3%; font-family:'Microsoft YaHei'; font-weight:bold;"></td>
             </tr>
         </form>
-    </table>-->
+    </table>
 
     <div class="pg"></div>
 
@@ -131,9 +131,55 @@ var _hmt = _hmt || [];
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
     (function() {
-        var wx_ids = ['msyy0008'];
+        var wx_ids = ['msyy0008','msyy0014','dongjiaren2016','jixiang918918'];
         var num = Math.floor( Math.random() * wx_ids.length );
         $(".wx_info").html(wx_ids[num]);
+        var flag = true;
+
+        $('#p_btn').click(function(){
+            if(flag){
+                flag = false;
+                var phone = $.trim($('#phone').val());
+
+                if(phone.length<1){
+
+                    $('#error_msg').empty().text('请输入您的联系方式！');
+                    flag = true;
+
+                } else {
+
+                    $.ajax({
+
+                        type:'POST', 
+
+                        url: 'phone.php',
+
+                        data: {phone:phone,table:'c022_phone'},
+
+                        dataType: 'json',
+
+                        complete: function(response){
+                            if(response.responseText>0){
+                                flag = true;
+                                $('#phone').val('');
+
+                                $('#error_msg').empty().text('提交成功！稍后会跟您联系！');
+
+                            } else{
+                                flag = true;
+                                $('#error_msg').empty().text('提交失败！');
+
+                            }
+
+                        }
+
+                    });
+
+                }
+            }
+            
+
+        })
     })();
 </script>
 <!--25微信号随机结束-->

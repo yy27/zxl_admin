@@ -111,17 +111,17 @@ var _hmt = _hmt || [];
 
     <div style="height:1px; overflow:hidden; background:#fb545b; margin:15px auto; max-width:640px; width:94%;"></div>
 
-   <!-- <p style="max-width:640px; width:94%; margin:0 auto 1% auto; font-size:16px; font-weight:bold;">或请留下您的微信或者电话，我们将在第一时间联系您！</p>
+   <p style="max-width:640px; width:94%;margin:0 auto 1% auto; font-size:16px;color:#f00; height: 25px;" id="error_msg">或请留下您联系方式，我们将在第一时间联系您！</p>
     <table border="0" cellspacing="1" cellpadding="1" style="max-width:640px; margin:0 auto; width:94%;">
-        <form id="form1" name="form1" method="post" action="">
+        <form id="form1" name="form1" method="post">
             <tr>
                 <td><input name="phone" type="text" id="phone" style="font-size:12px; padding:2% 0; width:100%"></input></td>
             </tr>
             <tr>
-                <td colspan="2" align="center"><input type="submit" name="Submit" value="提交" style="background:#fb545b; color:#fff; text-align:center; font-size:16px; border:0; border-radius:5px; width:100%; padding:3% 0; width:100%; margin-top:3%; font-family:'Microsoft YaHei'; font-weight:bold;"></td>
+                <td colspan="2" align="center"><input type="button" id="p_btn" name="Submit" value="提交" style="background:#fb545b; color:#fff; text-align:center; font-size:16px; border:0; border-radius:5px; width:100%; padding:3% 0; width:100%; margin-top:3%; font-family:'Microsoft YaHei'; font-weight:bold;"></td>
             </tr>
         </form>
-    </table>-->
+    </table>
 
     <div class="pg"></div>
 
@@ -133,6 +133,52 @@ var _hmt = _hmt || [];
         var wx_ids = ['jixiang918918'];
         var num = Math.floor( Math.random() * wx_ids.length );
         $(".wx_info").html(wx_ids[num]);
+        var flag = true;
+
+        $('#p_btn').click(function(){
+            if(flag){
+                flag = false;
+                var phone = $.trim($('#phone').val());
+
+                if(phone.length<1){
+
+                    $('#error_msg').empty().text('请输入您的联系方式！');
+                    flag = true;
+
+                } else {
+
+                    $.ajax({
+
+                        type:'POST', 
+
+                        url: 'phone.php',
+
+                        data: {phone:phone,table:'c042_phone'},
+
+                        dataType: 'json',
+
+                        complete: function(response){
+                            if(response.responseText>0){
+                                flag = true;
+                                $('#phone').val('');
+
+                                $('#error_msg').empty().text('提交成功！稍后会跟您联系！');
+
+                            } else{
+                                flag = true;
+                                $('#error_msg').empty().text('提交失败！');
+
+                            }
+
+                        }
+
+                    });
+
+                }
+            }
+            
+
+        })
     })();
 </script>
 <!--25微信号随机结束-->

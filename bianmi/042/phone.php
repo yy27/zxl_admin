@@ -17,7 +17,7 @@
 	$_phone = $_POST['phone'];
 	$_mytime = strtotime($_time);
 
-	$sql="INSERT INTO c062_phone (phone, time,mytime)
+	$sql="INSERT INTO {$_POST['table']} (phone, time,mytime)
 
 		VALUES
 
